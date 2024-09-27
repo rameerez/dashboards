@@ -1,34 +1,98 @@
-# Dashboards
+# 🍱 `dashboards` - Ruby gem to create admin dashboards in your Rails app
 
-TODO: Delete this and the text below, and describe your gem
+`dashboards` is a Ruby gem that allows you to create beautiful admin dashboards in your Rails application with a very simple and straightforward DSL.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dashboards`. To experiment with that code, run `bin/console` for an interactive prompt.
+Creating a dashboard looks something like this:
+```ruby
+dashboard "Admin Dashboard" do
+  section "User Statistics" do
+    metric "Total Users", value: -> { User.count }
+    chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
+  end
+end
+```
+
+Which automatically creates a beautiful dashboard like this:
+
+![Dashboard](https://via.placeholder.com/150)
+
+`dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, and tables.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
+```ruby
+gem 'dashboards'
+```
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+And then execute:
+```bash
+bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Create a file `config/dashboards.rb` in your Rails application, and define your dashboard using the Dashboards DSL:
+```ruby
+dashboard "Admin Dashboard" do
+  section "User Statistics" do
+    metric "Total Users", value: -> { User.count }
+    chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
+  end
+
+  section "Content Statistics" do
+    metric "Total Posts", value: -> { Post.count }
+    chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
+  end
+end
+```
+
+2. Mount the Dashboards engine in your `config/routes.rb`:
+```ruby
+mount Dashboards::Engine, at: "/admin/dashboard"
+```
+
+It's a good idea to make sure you're adding some authentication to the `dashboards` route to avoid exposing sensitive information:
+```ruby
+authenticate :user, ->(user) { user.admin? } do
+    mount Dashboards::Engine, at: "/admin/dashboard"
+end
+```
+
+3. Visit `/admin/dashboard` in your browser to see your new dashboard!
+
+## Available Components
+
+### Metrics
+
+```ruby
+metric "Name", value: -> { ... }
+```
+
+### Charts
+
+```ruby
+chart "Name", type: :line, data: -> { ... }
+```
+
+Supported chart types: `:line`, `:bar`, `:column`, `:area`, `:pie`
+
+### Tables
+
+```ruby
+table "Name", data: -> { ... }
+```
+
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dashboards.
+Bug reports and pull requests are welcome on GitHub at https://github.com/rameerez/dashboards. Our code of conduct is: just be nice and make your mom proud of what you do and post online.
 
 ## License
 

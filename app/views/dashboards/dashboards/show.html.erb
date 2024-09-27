@@ -1,0 +1,10 @@
+<h1><%= @dashboard.name %></h1>
+
+<% @dashboard.sections.each do |section| %>
+  <section>
+    <h2><%= section.name %></h2>
+    <% section.elements.each do |element| %>
+      <%= element.render.html_safe %>
+    <% end %>
+  </section>
+<% end %>
