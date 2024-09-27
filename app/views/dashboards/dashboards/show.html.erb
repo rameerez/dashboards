@@ -4,7 +4,7 @@
   <section>
     <h2><%= section.name %></h2>
     <% section.elements.each do |element| %>
-      <%= element.render.html_safe %>
+      <%= element.render(self).html_safe %>
     <% end %>
   </section>
 <% end %>

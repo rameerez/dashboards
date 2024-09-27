@@ -1,1 +1,7 @@
-hallo from dashboards
+<h1>Dashboards</h1>
+
+<ul>
+  <% @dashboards.each do |dashboard| %>
+    <li><%= link_to dashboard.name, dashboard_path(dashboard.slug) %></li>
+  <% end %>
+</ul>

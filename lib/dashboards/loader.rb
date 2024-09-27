@@ -6,10 +6,10 @@ module Dashboards
       config_file = Rails.root.join("config", "dashboards.rb")
       return unless File.exist?(config_file)
 
-      Dashboards.configuration.dashboard = Class.new do
+      Class.new do
         extend Dashboards::DSL
         instance_eval(File.read(config_file))
-      end.dashboard
+      end
     end
   end
 end

@@ -10,8 +10,13 @@ module Dashboards
       @options = options.except(:data)
     end
 
-    def render
-      # Implement table rendering logic
+    def render(context)
+      data = @data.is_a?(Proc) ? context.instance_exec(&@data) : @data
+      # Implement table rendering logic here
+      "<div class='table'>
+        <h3>#{@name}</h3>
+        <p>Table data: #{data.inspect}</p>
+      </div>"
     end
   end
 end

@@ -10,14 +10,14 @@ module Dashboards
       @options = options
     end
 
-    def render
+    def render(context)
       case @type
       when :metric
-        Metric.new(@name, @options).render
+        Metric.new(@name, @options).render(context)
       when :chart
-        Chart.new(@name, @options).render
+        Chart.new(@name, @options).render(context)
       when :table
-        Table.new(@name, @options).render
+        Table.new(@name, @options).render(context)
       else
         raise Error, "Unsupported element type: #{@type}"
       end

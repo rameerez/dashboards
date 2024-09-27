@@ -2,10 +2,11 @@
 
 module Dashboards
   class Dashboard
-    attr_reader :name, :sections
+    attr_reader :name, :sections, :slug
 
-    def initialize(name)
+    def initialize(name, options = {})
       @name = name
+      @slug = options[:slug] || name.parameterize
       @sections = []
     end
 

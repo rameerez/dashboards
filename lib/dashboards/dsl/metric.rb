@@ -10,10 +10,10 @@ module Dashboards
       @options = options.except(:value)
     end
 
-    def render
+    def render(context)
       "<div class='metric'>
         <h3>#{@name}</h3>
-        <p class='value'>#{@value}</p>
+        <p class='value'>#{@value.is_a?(Proc) ? context.instance_exec(&@value) : @value}</p>
       </div>"
     end
   end

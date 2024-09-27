@@ -1,0 +1,1 @@
+//= link dashboards/application.js

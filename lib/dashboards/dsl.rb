@@ -10,7 +10,19 @@ require_relative "dsl/table"
 module Dashboards
   module DSL
     def dashboard(name, &block)
-      Dashboard.new(name).tap { |d| d.instance_eval(&block) }
+      dashboard = Dashboard.new(name)
+      dashboard.instance_eval(&block)
+      Dashboards.configuration.add_dashboard(dashboard)
+    end
+  end
+
+  class CustomElement
+    def initialize(block)
+      @block = block
+    end
+
+    def render(context)
+      context.instance_eval(&@block)
     end
   end
 end

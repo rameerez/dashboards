@@ -9,20 +9,20 @@ module Dashboards
       @elements = []
     end
 
-    def show(type, name, **options)
-      @elements << Element.new(type, name, options)
+    def metric(name, options = {})
+      @elements << Metric.new(name, options)
     end
 
-    def metric(name, **options)
-      show(:metric, name, **options)
+    def chart(name, options = {})
+      @elements << Chart.new(name, options)
     end
 
-    def chart(name, **options)
-      show(:chart, name, **options)
+    def table(name, options = {})
+      @elements << Table.new(name, options)
     end
 
-    def table(name, **options)
-      show(:table, name, **options)
+    def custom(&block)
+      @elements << CustomElement.new(block)
     end
   end
 end

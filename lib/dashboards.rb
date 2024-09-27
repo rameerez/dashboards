@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "dashboards/version"
+require_relative "dashboards/configuration"
 require_relative "dashboards/dsl"
 require_relative "dashboards/engine" if defined?(Rails)
 
@@ -17,5 +18,14 @@ module Dashboards
     def configure
       yield(configuration)
     end
+
+    def reset_configuration!
+      @configuration = Configuration.new
+    end
   end
+end
+
+# Set default configuration
+Dashboards.configure do |config|
+  config.chart_library = :chartkick
 end

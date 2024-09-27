@@ -5,6 +5,9 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  <%= javascript_importmap_tags %>
+  <%= javascript_include_tag "dashboards/application", "data-turbo-track": "reload", defer: true %>
+
 </head>
 <body>
   <%= yield %>

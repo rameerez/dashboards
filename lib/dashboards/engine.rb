@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "loader"
+require "importmap-rails"
+require "chartkick"
 
 module Dashboards
   class Engine < ::Rails::Engine
@@ -12,5 +14,18 @@ module Dashboards
       end
     end
 
+    initializer "dashboards.importmap", before: "importmap" do |app|
+      app.config.importmap.paths << root.join("config/importmap.rb")
+      app.config.importmap.cache_sweepers << root.join("app/assets/javascripts")
+    end
+
+    initializer "dashboards.assets" do |app|
+      app.config.assets.precompile += %w[dashboards_manifest.js dashboards/application.js]
+    end
+
+    initializer "dashboards.append_assets_path" do |app|
+      app.config.assets.paths << root.join("app/assets/javascripts")
+      app.config.assets.paths << Chartkick::Engine.root.join("vendor/assets/javascripts")
+    end
   end
 end
