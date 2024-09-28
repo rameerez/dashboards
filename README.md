@@ -5,14 +5,18 @@
 Creating a dashboard looks something like this:
 ```ruby
 dashboard "Admin Dashboard" do
-  section "User Statistics" do
-    metric "Total Users", value: -> { User.count }
+  box "#{User.count} Total Users" do
     chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
+  end
+
+  box "#{Post.count} Total Posts" do
+    chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
+    table "Recent Posts", data: -> { Post.order(created_at: :desc).limit(5) }
   end
 end
 ```
 
-Which automatically creates a beautiful dashboard like this:
+Which automatically creates a beautiful bento-style dashboard like this:
 
 ![Dashboard](https://via.placeholder.com/150)
 
@@ -35,14 +39,13 @@ bundle install
 1. Create a file `config/dashboards.rb` in your Rails application, and define your dashboard using the Dashboards DSL:
 ```ruby
 dashboard "Admin Dashboard" do
-  section "User Statistics" do
-    metric "Total Users", value: -> { User.count }
+  box "#{User.count} Total Users" do
     chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
   end
 
-  section "Content Statistics" do
-    metric "Total Posts", value: -> { Post.count }
+  box "#{Post.count} Total Posts" do
     chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
+    table "Recent Posts", data: -> { Post.order(created_at: :desc).limit(5) }
   end
 end
 ```
@@ -82,7 +85,6 @@ Supported chart types: `:line`, `:bar`, `:column`, `:area`, `:pie`
 ```ruby
 table "Name", data: -> { ... }
 ```
-
 
 ## Development
 

@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 module Dashboards
-  class Section
+  class Box
     attr_reader :name, :elements
 
     def initialize(name)

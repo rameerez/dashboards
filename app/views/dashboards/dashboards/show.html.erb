@@ -1,10 +1,67 @@
+<style>
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5em;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    text-align: left;
+    min-height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 1em;
+  }
+
+  .box > * {
+    margin: 0.25em 0;
+  }
+
+  /* Tablet breakpoint */
+  @media (max-width: 768px) {
+    .dashboard {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Smartphone breakpoint */
+  @media (max-width: 480px) {
+    .dashboard {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  .box-title {
+    font-size: 0.85em;
+    font-weight: lighter;
+  }
+
+  .metric-value {
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 1em;
+    font-weight: bold;
+  }
+</style>
+
 <h1><%= @dashboard.name %></h1>
 
-<% @dashboard.sections.each do |section| %>
-  <section>
-    <h2><%= section.name %></h2>
-    <% section.elements.each do |element| %>
-      <%= element.render(self).html_safe %>
-    <% end %>
-  </section>
-<% end %>
+<div class="dashboard">
+
+  <% @dashboard.boxes.each do |box| %>
+    <div class="box">
+      <h3 class="box-title"><%= box.name %></h3>
+      <% box.elements.each do |element| %>
+        <%= element.render(self).html_safe %>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>
