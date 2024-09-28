@@ -4,11 +4,21 @@ module Dashboards
   class Chart
     attr_reader :name, :type, :data, :options
 
-    def initialize(name, options = {})
-      @name = name
+    DEFAULT_HEIGHT = '120px'
+    DEFAULT_COLOR = '#FFFFFF'  # White
+
+    def initialize(name_or_options, options = {})
+      if name_or_options.is_a?(Hash)
+        @name = nil
+        options = name_or_options
+      else
+        @name = name_or_options
+      end
       @type = options.delete(:type) || :line
       @data = options.delete(:data)
       @options = options
+      @options[:height] ||= DEFAULT_HEIGHT
+      @options[:color] ||= DEFAULT_COLOR
     end
 
     def render(context)
@@ -26,7 +36,29 @@ module Dashboards
     def render_chartkick(context, data)
       if defined?(Chartkick)
         chart_method = "#{@type}_chart"
-        options = @options.merge(title: @name)
+        options = @options.dup
+
+        # Only add title if @name is present
+        options[:title] = @name if @name
+
+        # Apply color to different chart types
+        case @type
+        when :pie, :donut
+          options[:colors] ||= [@options[:color]]
+        when :column, :bar
+          options[:colors] ||= [@options[:color]]
+        else
+          options[:dataset] ||= {
+            borderColor: @options[:color],
+            backgroundColor: @options[:color],
+            pointBackgroundColor: @options[:color],
+            pointBorderColor: @options[:color],
+            pointHoverBackgroundColor: @options[:color],
+            pointHoverBorderColor: @options[:color],
+            hoverBackgroundColor: @options[:color],
+            hoverBorderColor: @options[:color]
+          }
+        end
 
         if Chartkick.respond_to?(chart_method)
           Chartkick.public_send(chart_method, data, **options)
@@ -41,11 +73,12 @@ module Dashboards
     end
 
     def render_fallback(data)
-      "<div class='chart'>
-        <h3>#{@name}</h3>
-        <p>Chart data: #{data.inspect}</p>
-        <p>Note: Chartkick is not available. Please include it in your application for chart rendering.</p>
-      </div>"
+      html = "<div class='chart' style='height: #{@options[:height]}; color: #{@options[:color]};'>"
+      html += "<h3>#{@name}</h3>" if @name
+      html += "<p>Chart data: #{data.inspect}</p>"
+      html += "<p>Note: Chartkick is not available. Please include it in your application for chart rendering.</p>"
+      html += "</div>"
+      html
     end
   end
 end
