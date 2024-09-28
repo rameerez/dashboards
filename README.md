@@ -17,7 +17,7 @@ end
 
 Which automatically creates a beautiful bento-style dashboard like this:
 
-![Dashboard](https://via.placeholder.com/150)
+![Dashboard](/dashboards.webp)
 
 `dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, tables, summaries, and change-over-period indicators.
 
