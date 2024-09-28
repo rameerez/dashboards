@@ -20,9 +20,9 @@ module Dashboards
 
     def render(context)
       value_content = @value.is_a?(Proc) ? context.instance_exec(&@value) : @value
-      formatted_value = format_number(value_content)
-      formatted_value = "#{@currency}#{formatted_value}" if @currency
-      formatted_value += '%' if @percentage
+      formatted_value = value_content.nil? ? 'N/A' : format_number(value_content)
+      formatted_value = "#{@currency}#{formatted_value}" if @currency && !value_content.nil?
+      formatted_value += '%' if @percentage && !value_content.nil?
       if @name
         "<div class='metric'>
           <h3>#{@name}</h3>

@@ -52,6 +52,8 @@ module Dashboards
       # Apply height
       options[:height] = @options[:height]
 
+      raise ArgumentError, "Invalid chart type: #{@type}" unless VALID_TYPES.include?(@type)
+
       if context.respond_to?(chartkick_method)
         context.public_send(chartkick_method, data, **options)
       else
