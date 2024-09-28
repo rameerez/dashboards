@@ -5,16 +5,12 @@
 Creating a dashboard looks something like this:
 ```ruby
 dashboard "Admin Dashboard" do
-  box "User Statistics" do
+  box "Total Users" do
     metric value: -> { User.count }
-    summary data: -> { User }
-    chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
-    change_over_period -> { User }
   end
 
-  box "Post Statistics" do
-    chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
-    table "Recent Posts", data: -> { Post.order(created_at: :desc).limit(5) }
+  box "Posts over time" do
+    chart type: :line, data: -> { Post.group_by_day(:created_at).count }
   end
 end
 ```
@@ -25,7 +21,7 @@ Which automatically creates a beautiful bento-style dashboard like this:
 
 `dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, tables, summaries, and change-over-period indicators.
 
-`dashboards` uses [Chartkick](https://github.com/ankane/chartkick) for charts, and [groupdate](https://github.com/ankane/groupdate) for time-based grouping.
+It uses [Chartkick](https://github.com/ankane/chartkick) for charts, and [groupdate](https://github.com/ankane/groupdate) for time-based grouping.
 
 ## Installation
 
@@ -44,11 +40,14 @@ bundle install
 1. Create a file `config/dashboards.rb` in your Rails application, and define your dashboard using the Dashboards DSL:
 ```ruby
 dashboard "Admin Dashboard" do
-  box "#{User.count} Total Users" do
+  box "User Statistics" do
+    metric value: -> { User.count }
+    summary data: -> { User }
     chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
+    change_over_period -> { User }
   end
 
-  box "#{Post.count} Total Posts" do
+  box "Post Statistics" do
     chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
     table "Recent Posts", data: -> { Post.order(created_at: :desc).limit(5) }
   end
@@ -63,7 +62,7 @@ mount Dashboards::Engine, at: "/admin/dashboard"
 It's a good idea to make sure you're adding some authentication to the `dashboards` route to avoid exposing sensitive information:
 ```ruby
 authenticate :user, ->(user) { user.admin? } do
-    mount Dashboards::Engine, at: "/admin/dashboard"
+  mount Dashboards::Engine, at: "/admin/dashboard"
 end
 ```
 
