@@ -6,6 +6,7 @@ require_relative "dsl/box"
 require_relative "dsl/element"
 require_relative "dsl/metric"
 require_relative "dsl/table"
+require_relative "dsl/summary"
 
 module Dashboards
   module DSL

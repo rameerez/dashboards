@@ -19,6 +19,10 @@ module Dashboards
       @elements << Table.new(name, options)
     end
 
+    def summary(data_or_options, options = {})
+      @elements << Summary.new(data_or_options, options)
+    end
+
     def custom(&block)
       @elements << CustomElement.new(block)
     end
