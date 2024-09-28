@@ -1,5 +1,7 @@
 module Dashboards
   class DashboardsController < BaseController
+    # caches_action :show, expires_in: -> { Dashboards.configuration.cache_duration }
+
     def index
       if Dashboards.configuration.dashboards.empty?
         render :no_dashboards

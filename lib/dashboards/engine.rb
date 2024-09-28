@@ -25,5 +25,9 @@ module Dashboards
       app.config.assets.paths << root.join("app/assets/javascripts")
       app.config.assets.paths << Chartkick::Engine.root.join("vendor/assets/javascripts")
     end
+
+    initializer "dashboards.cache" do |app|
+      app.config.dashboards_cache_store = :memory_store
+    end
   end
 end
