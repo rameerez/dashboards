@@ -1,7 +1,7 @@
 <style>
   .dashboard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0.5em;
   }
 
@@ -12,7 +12,7 @@
     /* align-items: center; */
     text-align: left;
     min-height: 100px;
-    background-color: #f0f0f0;
+    background-color: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 1em;
   }
@@ -74,9 +74,45 @@
     font-size: 1em;
     font-weight: bold;
   }
+
+  .dashboard-nav {
+  }
+
+  .dashboard-nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dashboard-nav li {
+    font-size: 0.9em;
+  }
+
+  .dashboard-nav a {
+    text-decoration: none;
+    color: #007bff;
+  }
+
+  .dashboard-nav a:hover {
+    text-decoration: underline;
+  }
+
+  .dashboard-nav ul li:not(:last-child)::after {
+    content: "·";
+    margin: 0 0.5em;
+  }
 </style>
 
 <h1><%= @dashboard.name %></h1>
+
+<nav class="dashboard-nav">
+  <ul>
+    <% Dashboards.configuration.dashboards.each_with_index do |dashboard, index| %>
+        <li><%= (dashboard.slug == @dashboard.slug) ? "<u>#{dashboard.name}</u>".html_safe : link_to(dashboard.name, dashboard_path(dashboard.slug)) %></li>
+    <% end %>
+  </ul>
+</nav>
 
 <div class="dashboard">
 
