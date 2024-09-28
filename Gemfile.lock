@@ -4,7 +4,6 @@ PATH
     dashboards (0.1.0)
       chartkick (~> 5.0)
       groupdate (~> 6.1)
-      hightop (~> 0.4)
       importmap-rails (>= 2.0.0)
       rails (>= 7.0.0)
 
@@ -96,8 +95,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.4.0)
-      activesupport (>= 6.1)
-    hightop (0.4.0)
       activesupport (>= 6.1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)

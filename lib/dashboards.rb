@@ -9,7 +9,6 @@ require_relative "dashboards/engine" if defined?(Rails)
 require "importmap-rails"
 require "chartkick"
 require "groupdate"
-require "hightop"
 
 module Dashboards
   class Error < StandardError; end
