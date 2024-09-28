@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "importmap-rails", ">= 2.0.0"
   spec.add_dependency "chartkick", "~> 5.0"
   spec.add_dependency "groupdate", "~> 6.1"
+  spec.add_dependency "hightop", "~> 0.4"
 
   spec.add_development_dependency "rspec", "~> 3.12"
   spec.add_development_dependency "rubocop", "~> 1.50"
