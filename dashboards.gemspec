@@ -8,13 +8,13 @@ Gem::Specification.new do |spec|
   spec.authors = ["rameerez"]
   spec.email = ["rubygems@rameerez.com"]
 
-  spec.summary = "A simple and powerful DSL for creating admin dashboards in Rails applications."
-  spec.description = "Create beautiful admin dashboards in your Rails application with a very simple and straightforward DSL."
+  spec.summary = "A simple and powerful DSL for creating beautiful, customizable bento-style admin dashboards in Rails applications."
+  spec.description = "Create beautiful, customizable bento-style admin dashboards in your Rails application with a very simple DSL."
   spec.homepage = "https://github.com/rameerez/dashboards"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
-  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/rameerez/dashboards"
