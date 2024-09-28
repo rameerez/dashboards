@@ -14,11 +14,15 @@ module Dashboards
       @value = options[:value]
       @options = options.except(:value)
       @format_big_numbers = options[:format_big_numbers] || false
+      @percentage = options[:percentage] || false
+      @currency = options[:currency]
     end
 
     def render(context)
       value_content = @value.is_a?(Proc) ? context.instance_exec(&@value) : @value
       formatted_value = format_number(value_content)
+      formatted_value = "#{@currency}#{formatted_value}" if @currency
+      formatted_value += '%' if @percentage
       if @name
         "<div class='metric'>
           <h3>#{@name}</h3>
