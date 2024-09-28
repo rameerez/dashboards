@@ -25,6 +25,8 @@ Which automatically creates a beautiful bento-style dashboard like this:
 
 `dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, tables, summaries, and change-over-period indicators.
 
+`dashboards` uses [Chartkick](https://github.com/ankane/chartkick) for charts, and [groupdate](https://github.com/ankane/groupdate) for time-based grouping.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -75,26 +77,72 @@ end
 metric value: -> { User.count }
 ```
 
-Metrics display a single value.
+Metrics display a single value, a big number inside the box.
+
+Metrics can be either a generic number or a currency:
+
+```ruby
+metric value: -> { Order.sum(:total) }, currency: "$"
+```
+
+You can also display a percentage:
+
+```ruby
+# This will show, for example, a percentage of users that have posted at least one time.
+metric value: -> { (Post.group(:user_id).count.uniq.count.to_f / User.count * 100).round(0) }, percentage: true
+```
+
+You can also pretty print big numbers:
+
+```ruby
+# This will display 1.2B, 1.2M, or 1.2K for 1.2 billion, million, or thousand.
+metric value: -> { 1234567890 }, format_big_numbers: true
+```
 
 ### Charts
 
 ```ruby
-chart "Name", type: :line, data: -> { User.group_by_day(:created_at).count }
-chart type: :pie, data: -> { Post.group(:category).count }, color: '#FF0000'
+chart type: :line, data: -> { User.group_by_day(:created_at).count }
 ```
 
 Supported chart types: `:line`, `:bar`, `:column`, `:area`, `:pie`
 
-Charts can be customized with colors and the title is optional.
+Charts can be customized with colors, height, and other options:
+
+```ruby
+chart type: :line, data: -> { Order.group_by_month(:created_at).sum(:total) }, 
+      color: "#4CAF50", height: "300px"
+```
+
+You can also add a title to the chart:
+
+```ruby
+chart "Order Totals", type: :line, data: -> { Order.group_by_month(:created_at).sum(:total) }, 
+      color: "#4CAF50", height: "300px", title: "Monthly Order Totals"
+```
 
 ### Tables
 
 ```ruby
-table "Name", data: -> { Post.order(created_at: :desc).limit(5) }
+table data: -> { { "US" => 100, "UK" => 200, "CA" => 300 } }
 ```
 
 Tables display data in a tabular format.
+
+Currently, only two-column tables are supported. The data input should be a hash, like this:
+
+```ruby
+# This will display a table of the 5 most recent users that have confirmed their email address.
+
+table value: -> {
+  User.order(created_at: :desc).limit(5).pluck(:email, :confirmed_at).map do |email, confirmed_at|
+    {
+      email: email,
+      confirmed_at: ActionController::Base.helpers.time_ago_in_words(confirmed_at) + " ago"
+    }
+  end
+}
+```
 
 ### Summaries
 
