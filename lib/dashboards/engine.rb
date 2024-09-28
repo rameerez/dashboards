@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "loader"
-require "importmap-rails"
-require "chartkick"
 
 module Dashboards
   class Engine < ::Rails::Engine

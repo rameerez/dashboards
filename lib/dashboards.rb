@@ -5,6 +5,12 @@ require_relative "dashboards/configuration"
 require_relative "dashboards/dsl"
 require_relative "dashboards/engine" if defined?(Rails)
 
+# Require all the dependencies
+require 'importmap-rails'
+require 'chartkick'
+require 'groupdate'
+require 'hightop'
+
 module Dashboards
   class Error < StandardError; end
 
