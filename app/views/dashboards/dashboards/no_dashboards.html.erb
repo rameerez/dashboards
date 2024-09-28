@@ -1,0 +1,26 @@
+<h1>Welcome to 🍱 <b>dashboards</b></h1>
+
+<p>It looks like you haven't defined any dashboards yet. Let's get started!</p>
+
+<h2>How to Create Your First Dashboard</h2>
+
+<ol>
+  <li>Create a file named <code>config/dashboards.rb</code> in your Rails application.</li>
+  <li>Open the file and define your first dashboard using the Dashboards DSL. Follow the instructions in the <a href="https://github.com/rameerez/dashboards#readme" target="_blank">🍱 dashboards README</a>. Here's an example:</li>
+</ol>
+
+<pre><code>
+dashboard "My First Dashboard" do
+  box "User Statistics" do
+    metric "Total Users", value: -> { User.count }
+    chart "New Users", type: :line, data: -> { User.group_by_day(:created_at).count }
+  end
+
+  box "Post Statistics" do
+    metric "Total Posts", value: -> { Post.count }
+    chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
+  end
+end
+</code></pre>
+
+<p>After adding your dashboard definition, restart your Rails server to see your new dashboard in action!</p>

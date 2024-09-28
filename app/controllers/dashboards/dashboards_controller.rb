@@ -1,7 +1,12 @@
 module Dashboards
   class DashboardsController < BaseController
     def index
-      @dashboards = Dashboards.configuration.dashboards
+      if Dashboards.configuration.dashboards.empty?
+        render :no_dashboards
+      else
+        first_dashboard = Dashboards.configuration.dashboards.first
+        redirect_to dashboard_path(first_dashboard.slug)
+      end
     end
 
     def show
