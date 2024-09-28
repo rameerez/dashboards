@@ -1,0 +1,41 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5em;
+}
+
+.dashboard-nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-nav li {
+  font-size: 0.9em;
+}
+
+.dashboard-nav li:not(:last-child)::after {
+  content: "·";
+  margin: 0 0.5em;
+}
+
+.dashboard-nav a {
+  text-decoration: none;
+}
+
+.dashboard-nav a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

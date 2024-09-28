@@ -18,7 +18,7 @@ module Dashboards
     end
 
     initializer "dashboards.assets" do |app|
-      app.config.assets.precompile += %w[dashboards_manifest.js dashboards/application.js]
+      app.config.assets.precompile += %w[dashboards_manifest.js dashboards/application.js dashboards/application.css]
     end
 
     initializer "dashboards.append_assets_path" do |app|

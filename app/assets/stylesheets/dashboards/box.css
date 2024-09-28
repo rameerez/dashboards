@@ -1,0 +1,19 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  min-height: 100px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1em;
+}
+
+.box > * {
+  margin: 0.25em 0;
+}
+
+.box-title {
+  font-size: 0.85em;
+  font-weight: lighter;
+}
