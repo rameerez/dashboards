@@ -5,11 +5,14 @@
 Creating a dashboard looks something like this:
 ```ruby
 dashboard "Admin Dashboard" do
-  box "#{User.count} Total Users" do
+  box "User Statistics" do
+    metric value: -> { User.count }
+    summary data: -> { User }
     chart "User Signups", type: :line, data: -> { User.group_by_day(:created_at).count }
+    change_over_period -> { User }
   end
 
-  box "#{Post.count} Total Posts" do
+  box "Post Statistics" do
     chart "Posts by Category", type: :pie, data: -> { Post.group(:category).count }
     table "Recent Posts", data: -> { Post.order(created_at: :desc).limit(5) }
   end
@@ -20,7 +23,7 @@ Which automatically creates a beautiful bento-style dashboard like this:
 
 ![Dashboard](https://via.placeholder.com/150)
 
-`dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, and tables.
+`dashboards` has a minimal setup so you can quickly build dashboards with metrics, charts, tables, summaries, and change-over-period indicators.
 
 ## Installation
 
@@ -69,22 +72,54 @@ end
 ### Metrics
 
 ```ruby
-metric "Name", value: -> { ... }
+metric value: -> { User.count }
 ```
+
+Metrics display a single value.
 
 ### Charts
 
 ```ruby
-chart "Name", type: :line, data: -> { ... }
+chart "Name", type: :line, data: -> { User.group_by_day(:created_at).count }
+chart type: :pie, data: -> { Post.group(:category).count }, color: '#FF0000'
 ```
 
 Supported chart types: `:line`, `:bar`, `:column`, `:area`, `:pie`
 
+Charts can be customized with colors and the title is optional.
+
 ### Tables
 
 ```ruby
-table "Name", data: -> { ... }
+table "Name", data: -> { Post.order(created_at: :desc).limit(5) }
 ```
+
+Tables display data in a tabular format.
+
+### Summaries
+
+```ruby
+summary data: -> { User }
+```
+
+Summaries show quick statistics for the last 24 hours, 7 days, and 30 days. The periods can be customized:
+
+```ruby
+summary data: -> { User }, periods: [
+  { name: '1h', duration: 1.hour },
+  { name: '12h', duration: 12.hours },
+  { name: '24h', duration: 24.hours }
+]
+```
+
+### Change Over Period
+
+```ruby
+change_over_period -> { User }
+change_over_period -> { Post }, period: 30.days, date_column: :published_at
+```
+
+This component shows the percentage change over a specified period (default is 7 days). You can customize the period and the date column used for comparison.
 
 ## Development
 
