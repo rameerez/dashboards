@@ -1,4 +1,4 @@
-# 🍱 `dashboards` - Ruby gem to create admin dashboards in your Rails app
+# 🍱 `dashboards` - Ruby gem to create customizable bento-style admin dashboards in your Rails app
 
 `dashboards` is a Ruby gem that allows you to create beautiful admin dashboards in your Rails application with a very simple and straightforward DSL.
 
