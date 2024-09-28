@@ -12,11 +12,21 @@ module Dashboards
 
     def render(context)
       data = @data.is_a?(Proc) ? context.instance_exec(&@data) : @data
-      # Implement table rendering logic here
-      "<div class='table'>
-        <h3>#{@name}</h3>
-        <p>Table data: #{data.inspect}</p>
-      </div>"
+      render_table(data)
+    end
+
+    private
+
+    def render_table(data)
+      table_html = "<div class='table'><h3>#{@name}</h3><table>"
+      # table_html += '<tr><th>Item</th><th>Count</th></tr>'
+
+      data.each do |item, count|
+        table_html += "<tr><td>#{item}</td><td>#{count}</td></tr>"
+      end
+
+      table_html += '</table></div>'
+      table_html
     end
   end
 end
