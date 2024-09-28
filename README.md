@@ -143,6 +143,12 @@ table value: -> {
 }
 ```
 
+You can leverage [`hightop`](https://github.com/ankane/hightop) to, for example, display a table of the top most sold products:
+
+```ruby
+table data: -> { Product.top(:sales, 5) }
+```
+
 ### Summaries
 
 ```ruby
