@@ -26,5 +26,9 @@ module Dashboards
     def custom(&block)
       @elements << CustomElement.new(block)
     end
+
+    def change_over_period(data_or_options, options = {})
+      @elements << ChangeOverPeriod.new(data_or_options, options)
+    end
   end
 end

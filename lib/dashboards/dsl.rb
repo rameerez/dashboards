@@ -7,6 +7,7 @@ require_relative "dsl/element"
 require_relative "dsl/metric"
 require_relative "dsl/table"
 require_relative "dsl/summary"
+require_relative "dsl/change_over_period"
 
 module Dashboards
   module DSL
